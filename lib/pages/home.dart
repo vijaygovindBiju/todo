@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/data/database_hive.dart';
 import 'package:todo/data/tasks.dart';
-import 'package:todo/widget/dialogbo.dart';
 import 'package:todo/widget/todo_card.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -15,55 +14,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   DatabaseHive db = DatabaseHive();
   var box = Hive.box<Tasks>("TaskBox");
-
-  void editOrAdd(int? index) async {
-    if (index != null) {
-      final result = await showDialog(
-        context: context,
-        builder: (context) {
-          return Dialogbo(index: index, task: db.tasks[index].text);
-        },
-      );
-      if (result != null) {
-        setState(() {
-          db.tasks[index].text = result;
-        });
-        box.putAt(
-          index,
-          Tasks(text: db.tasks[index].text, isDone: db.tasks[index].isDone),
-        );
-      }
-    } else {
-      final result = await showDialog(
-        context: context,
-        builder: (context) {
-          return Dialogbo(index: null, task: "");
-        },
-      );
-      if (result != null) {
-        setState(() {
-          db.saving(result.toString(), false);
-        });
-      }
-    }
-  }
-
-  void remove(int index) {
-    setState(() {
-      db.tasks.removeAt(index);
-    });
-    box.deleteAt(index);
-  }
-
-  void onChange(int index) {
-    setState(() {
-      db.tasks[index].isDone = !db.tasks[index].isDone;
-    });
-    box.putAt(
-      index,
-      Tasks(text: db.tasks[index].text, isDone: db.tasks[index].isDone),
-    );
-  }
 
   @override
   void initState() {
@@ -81,7 +31,9 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.yellow[400],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => editOrAdd(null),
+        onPressed: () => setState(() {
+          db.editOrAdd(null, context);
+        }),
         child: Icon(Icons.add),
       ),
       body: Padding(
@@ -91,11 +43,17 @@ class _HomeState extends State<Home> {
             itemCount: db.tasks.length,
             itemBuilder: (BuildContext context, int index) {
               return TodoCard(
-                onPress: () => remove(index),
+                onPress: () => setState(() {
+                  db.remove(index);
+                }),
                 todoText: db.tasks[index].text,
                 isDone: db.tasks[index].isDone,
-                onChanged: (_) => onChange(index),
-                onPressed: () => editOrAdd(index),
+                onChanged: (_) => setState(() {
+                  db.onChange(index);
+                }),
+                onPressed: () => setState(() {
+                  db.editOrAdd(index, context);
+                }),
               );
             },
           ),

@@ -9,3 +9,4 @@ class Tasks extends HiveObject {
   bool isDone;
   Tasks({required this.text, required this.isDone});
 }
+  
