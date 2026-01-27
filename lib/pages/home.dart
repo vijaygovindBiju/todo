@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/data/database_hive.dart';
 import 'package:todo/data/tasks.dart';
+import 'package:todo/widget/dialogbo.dart';
 import 'package:todo/widget/todo_card.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -13,11 +14,35 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   DatabaseHive db = DatabaseHive();
-  var box = Hive.box<Tasks>("TaskBox");
+
+  void editOrAdd(int? index) async {
+    if (index != null) {
+      final result = await showDialog(
+        context: context,
+        builder: (context) {
+          return Dialogbo(index: index, task: db.tasks[index].text);
+        },
+      );
+      if (result != null) {
+        db.tasks[index].text = result;
+        db.update(index);
+      }
+    } else {
+      final result = await showDialog(
+        context: context,
+        builder: (context) {
+          return Dialogbo(index: null, task: "");
+        },
+      );
+      if (result != null) {
+        db.saving(result.toString(), false);
+      }
+    }
+  }
 
   @override
   void initState() {
-    db.tasks = box.values.toList();
+    db.taskCalling;
     super.initState();
   }
 
@@ -32,7 +57,7 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => setState(() {
-          db.editOrAdd(null, context);
+          editOrAdd(null);
         }),
         child: Icon(Icons.add),
       ),
@@ -52,7 +77,7 @@ class _HomeState extends State<Home> {
                   db.onChange(index);
                 }),
                 onPressed: () => setState(() {
-                  db.editOrAdd(index, context);
+                  editOrAdd(index);
                 }),
               );
             },
