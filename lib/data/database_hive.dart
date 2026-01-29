@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:todo/data/tasks.dart';
-import 'package:todo/widget/dialogbo.dart';
 
 class DatabaseHive {
   List<Tasks> tasks = [];
@@ -14,20 +12,20 @@ class DatabaseHive {
 
   void saving(String task, bool isDone) {
     box.add(Tasks(text: task, isDone: isDone));
-    tasks.add(Tasks(text: task, isDone: isDone));
+    taskCalling();
   }
 
   void remove(int index) {
-    tasks.removeAt(index);
     box.deleteAt(index);
+    taskCalling();
   }
 
   void onChange(int index) {
-    tasks[index].isDone = !tasks[index].isDone;
     box.putAt(
       index,
       Tasks(text: tasks[index].text, isDone: tasks[index].isDone),
     );
+    taskCalling();
   }
 
   void update(int index) {
@@ -35,5 +33,6 @@ class DatabaseHive {
       index,
       Tasks(text: tasks[index].text, isDone: tasks[index].isDone),
     );
+    taskCalling();
   }
 }
