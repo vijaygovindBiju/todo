@@ -1,6 +1,6 @@
 {
-    "name": "todo",
-    "short_name": "todo",
+    "name": "todo_recape",
+    "short_name": "todo_recape",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

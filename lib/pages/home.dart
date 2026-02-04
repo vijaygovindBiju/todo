@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/data/database_hive.dart';
-import 'package:todo/data/tasks.dart';
 import 'package:todo/widget/dialogbo.dart';
 import 'package:todo/widget/todo_card.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
