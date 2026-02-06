@@ -53,10 +53,7 @@ class _DialogboState extends State<Dialogbo> {
                     top: BorderSide(),
                     left: BorderSide(),
                   ),
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                  ),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: TextButton(
                   onPressed: () {
@@ -74,10 +71,7 @@ class _DialogboState extends State<Dialogbo> {
                     top: BorderSide(),
                     left: BorderSide(),
                   ),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
-                  ),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: TextButton(
                   onPressed: () {
