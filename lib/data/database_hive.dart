@@ -22,19 +22,13 @@ class DatabaseHive extends ChangeNotifier {
     taskCalling();
   }
 
-  void onChange(int index) {
-    box.putAt(
-      index,
-      Tasks(text: tasks[index].text, isDone: tasks[index].isDone),
-    );
+  void onChange(int index, String text, bool isDone) {
+    box.putAt(index, Tasks(text: text, isDone: !isDone));
     taskCalling();
   }
 
-  void update(int index) {
-    box.putAt(
-      index,
-      Tasks(text: tasks[index].text, isDone: tasks[index].isDone),
-    );
+  void update(int index, String text, bool isDone) {
+    box.putAt(index, Tasks(text: text, isDone: isDone));
     taskCalling();
   }
 }

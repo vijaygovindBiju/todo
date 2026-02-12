@@ -12,18 +12,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  DatabaseHive db = DatabaseHive();
-
   void editOrAdd(int? index) async {
     if (index != null) {
       final result = await showDialog(
         context: context,
         builder: (context) {
-          return Dialogbo(index: index, task: db.tasks[index].text);
+          return Dialogbo(index: index, task: context.read<DatabaseHive>().tasks[index].text);
         },
       );
       if (result != null) {
-        context.read<DatabaseHive>().update(index);
+        context.read<DatabaseHive>().update(
+          index,
+          result.toString(),
+          context.read<DatabaseHive>().tasks[index].isDone,
+        );
       }
     } else {
       final result = await showDialog(
@@ -40,7 +42,7 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    db.taskCalling;
+    context.read<DatabaseHive>().taskCalling();
     super.initState();
   }
 
@@ -69,11 +71,11 @@ class _HomeState extends State<Home> {
                   todoText: provider.tasks[index].text,
                   isDone: provider.tasks[index].isDone,
                   onChanged: (_) {
-                    context.read<DatabaseHive>().onChange(index);
+                    context.read<DatabaseHive>().onChange(index,context.read<DatabaseHive>().tasks[index].text,context.read<DatabaseHive>().tasks[index].isDone);
                   },
-                  onPressed: () => setState(() {
+                  onPressed: () {
                     editOrAdd(index);
-                  }),
+                  },
                 );
               },
             ),

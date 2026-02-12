@@ -23,6 +23,10 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(debugShowCheckedModeBanner: false, home: Home());
+    return const MaterialApp(
+      title: "ToDO",
+      debugShowCheckedModeBanner: false,
+      home: Home(),
+    );
   }
 }
