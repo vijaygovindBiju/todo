@@ -17,14 +17,14 @@ class _HomeState extends State<Home> {
       final result = await showDialog(
         context: context,
         builder: (context) {
-          return Dialogbo(index: index, task: context.read<DatabaseHive>().tasks[index].text);
+          return Dialogbo(index: index, task: context.read<DatabaseHive>().getTasks()[index].text);
         },
       );
       if (result != null) {
         context.read<DatabaseHive>().update(
           index,
           result.toString(),
-          context.read<DatabaseHive>().tasks[index].isDone,
+          context.read<DatabaseHive>().getTasks()[index].isDone,
         );
       }
     } else {
@@ -64,14 +64,14 @@ class _HomeState extends State<Home> {
         child: Consumer<DatabaseHive>(
           builder: (_, provider, _) => Container(
             child: ListView.builder(
-              itemCount: provider.tasks.length,
+              itemCount: provider.getTasks().length,
               itemBuilder: (BuildContext context, int index) {
                 return TodoCard(
                   onPress: () => {context.read<DatabaseHive>().remove(index)},
-                  todoText: provider.tasks[index].text,
-                  isDone: provider.tasks[index].isDone,
+                  todoText: provider.getTasks()[index].text,
+                  isDone: provider.getTasks()[index].isDone,
                   onChanged: (_) {
-                    context.read<DatabaseHive>().onChange(index,context.read<DatabaseHive>().tasks[index].text,context.read<DatabaseHive>().tasks[index].isDone);
+                    context.read<DatabaseHive>().onChange(index,context.read<DatabaseHive>().getTasks()[index].text,context.read<DatabaseHive>().getTasks()[index].isDone);
                   },
                   onPressed: () {
                     editOrAdd(index);
