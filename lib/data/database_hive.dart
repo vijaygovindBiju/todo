@@ -1,13 +1,15 @@
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:todo/data/tasks.dart';
 
-class DatabaseHive {
+class DatabaseHive extends ChangeNotifier {
   List<Tasks> tasks = [];
 
   var box = Hive.box<Tasks>("TaskBox");
 
   void taskCalling() {
     tasks = box.values.toList();
+    notifyListeners();
   }
 
   void saving(String task, bool isDone) {

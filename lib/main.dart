@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/data/database_hive.dart';
 import 'package:todo/data/tasks.dart';
 import 'package:todo/pages/home.dart';
 
@@ -9,8 +11,13 @@ void main() async {
   Hive.registerAdapter(TasksAdapter());
   await Hive.openBox<Tasks>("TaskBox");
 
-  runApp(const MainApp());
-} 
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (context) => DatabaseHive())],
+      child: MainApp(),
+    ),
+  );
+}
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
