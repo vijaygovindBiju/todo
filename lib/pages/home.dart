@@ -73,17 +73,17 @@ class _HomeState extends State<Home> {
             List Tasks=provider.getTasks();
              return Container(
               child: ListView.builder(
-                itemCount: provider.getTasks().length,
+                itemCount: Tasks.length,
                 itemBuilder: (BuildContext context, int index) {
                   return TodoCard(
                     onPress: () => {provider.remove(index)},
-                    todoText: provider.getTasks()[index].text,
-                    isDone: provider.getTasks()[index].isDone,
+                    todoText: Tasks[index].text,
+                    isDone: Tasks[index].isDone,
                     onChanged: (_) {
                       provider.onChange(
                         index,
-                        provider.getTasks()[index].text,
-                        provider.getTasks()[index].isDone,
+                        Tasks[index].text,
+                        Tasks[index].isDone,
                       );
                     },
                     onPressed: () {
