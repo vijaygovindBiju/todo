@@ -23,7 +23,6 @@ class _HomeState extends State<Home> {
         },
       );
       if (result != null) {
-        db.tasks[index].text = result;
         context.read<DatabaseHive>().update(index);
       }
     } else {
