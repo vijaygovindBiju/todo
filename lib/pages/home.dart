@@ -13,13 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late DatabaseHive taskProvider;
-
-  @override
-  void initState() {
-    taskProvider = context.read<DatabaseHive>();
-    super.initState();
-  }
+  late DatabaseHive taskProvider = taskProvider = context.read<DatabaseHive>();
 
   void editOrAdd(int? index) async {
     if (index != null) {
@@ -74,15 +68,16 @@ class _HomeState extends State<Home> {
               child: ListView.builder(
                 itemCount: tasks.length,
                 itemBuilder: (BuildContext context, int index) {
+                  final task = tasks[index];
                   return TodoCard(
                     onPress: () => provider.remove(index),
-                    todoText: tasks[index].text,
-                    isDone: tasks[index].isDone,
+                    todoText: task.text,
+                    isDone: task.isDone,
                     onChanged: (_) {
                       provider.onChange(
                         index,
-                        tasks[index].text,
-                        tasks[index].isDone,
+                        task.text,
+                        task.isDone,
                       );
                     },
                     onPressed: () {
