@@ -8,8 +8,9 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TasksAdapter());
   await Hive.openBox<Tasks>("TaskBox");
+
   runApp(const MainApp());
-}
+} 
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
