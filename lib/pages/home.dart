@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/data/database_hive.dart';
+import 'package:todo/data/tasks.dart';
 import 'package:todo/widget/dialogbo.dart';
 import 'package:todo/widget/todo_card.dart';
 
@@ -17,8 +18,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     taskProvider = context.read<DatabaseHive>();
-
-    taskProvider.taskCalling();
     super.initState();
   }
 
@@ -70,20 +69,20 @@ class _HomeState extends State<Home> {
         padding: const EdgeInsets.all(18.0),
         child: Consumer<DatabaseHive>(
           builder: (_, provider, _) {
-            List Tasks=provider.getTasks();
-             return Container(
+            List<Tasks> tasks = provider.getTasks();
+            return Container(
               child: ListView.builder(
-                itemCount: Tasks.length,
+                itemCount: tasks.length,
                 itemBuilder: (BuildContext context, int index) {
                   return TodoCard(
-                    onPress: () => {provider.remove(index)},
-                    todoText: Tasks[index].text,
-                    isDone: Tasks[index].isDone,
+                    onPress: () => provider.remove(index),
+                    todoText: tasks[index].text,
+                    isDone: tasks[index].isDone,
                     onChanged: (_) {
                       provider.onChange(
                         index,
-                        Tasks[index].text,
-                        Tasks[index].isDone,
+                        tasks[index].text,
+                        tasks[index].isDone,
                       );
                     },
                     onPressed: () {
