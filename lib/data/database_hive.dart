@@ -3,12 +3,14 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:todo/data/tasks.dart';
 
 class DatabaseHive extends ChangeNotifier {
-  List<Tasks> tasks = [];
+  List<Tasks> _tasks = [];
 
   var box = Hive.box<Tasks>("TaskBox");
 
+ List<Tasks> getTasks()=> _tasks;
+
   void taskCalling() {
-    tasks = box.values.toList();
+    _tasks = box.values.toList();
     notifyListeners();
   }
 
