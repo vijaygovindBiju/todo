@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/data/database_hive.dart';
 import 'package:todo/widget/dialogbo.dart';
 import 'package:todo/widget/todo_card.dart';
@@ -23,7 +24,7 @@ class _HomeState extends State<Home> {
       );
       if (result != null) {
         db.tasks[index].text = result;
-        db.update(index);
+        context.read<DatabaseHive>().update(index);
       }
     } else {
       final result = await showDialog(
@@ -33,7 +34,7 @@ class _HomeState extends State<Home> {
         },
       );
       if (result != null) {
-        db.saving(result.toString(), false);
+        context.read<DatabaseHive>().saving(result.toString(), false);
       }
     }
   }
@@ -54,31 +55,29 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.yellow[400],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => setState(() {
-          editOrAdd(null);
-        }),
+        onPressed: () => editOrAdd(null),
         child: Icon(Icons.add),
       ),
       body: Padding(
         padding: const EdgeInsets.all(18.0),
-        child: Container(
-          child: ListView.builder(
-            itemCount: db.tasks.length,
-            itemBuilder: (BuildContext context, int index) {
-              return TodoCard(
-                onPress: () => setState(() {
-                  db.remove(index);
-                }),
-                todoText: db.tasks[index].text,
-                isDone: db.tasks[index].isDone,
-                onChanged: (_) => setState(() {
-                  db.onChange(index);
-                }),
-                onPressed: () => setState(() {
-                  editOrAdd(index);
-                }),
-              );
-            },
+        child: Consumer<DatabaseHive>(
+          builder: (_, provider, _) => Container(
+            child: ListView.builder(
+              itemCount: provider.tasks.length,
+              itemBuilder: (BuildContext context, int index) {
+                return TodoCard(
+                  onPress: () => {context.read<DatabaseHive>().remove(index)},
+                  todoText: provider.tasks[index].text,
+                  isDone: provider.tasks[index].isDone,
+                  onChanged: (_) {
+                    context.read<DatabaseHive>().onChange(index);
+                  },
+                  onPressed: () => setState(() {
+                    editOrAdd(index);
+                  }),
+                );
+              },
+            ),
           ),
         ),
       ),
