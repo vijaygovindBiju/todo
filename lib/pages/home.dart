@@ -12,19 +12,32 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late DatabaseHive taskProvider;
+
+  @override
+  void initState() {
+    taskProvider = context.read<DatabaseHive>();
+
+    taskProvider.taskCalling();
+    super.initState();
+  }
+
   void editOrAdd(int? index) async {
     if (index != null) {
       final result = await showDialog(
         context: context,
         builder: (context) {
-          return Dialogbo(index: index, task: context.read<DatabaseHive>().getTasks()[index].text);
+          return Dialogbo(
+            index: index,
+            task: taskProvider.getTasks()[index].text,
+          );
         },
       );
       if (result != null) {
-        context.read<DatabaseHive>().update(
+        taskProvider.update(
           index,
           result.toString(),
-          context.read<DatabaseHive>().getTasks()[index].isDone,
+          taskProvider.getTasks()[index].isDone,
         );
       }
     } else {
@@ -35,15 +48,9 @@ class _HomeState extends State<Home> {
         },
       );
       if (result != null) {
-        context.read<DatabaseHive>().saving(result.toString(), false);
+        taskProvider.saving(result.toString(), false);
       }
     }
-  }
-
-  @override
-  void initState() {
-    context.read<DatabaseHive>().taskCalling();
-    super.initState();
   }
 
   @override
@@ -62,24 +69,31 @@ class _HomeState extends State<Home> {
       body: Padding(
         padding: const EdgeInsets.all(18.0),
         child: Consumer<DatabaseHive>(
-          builder: (_, provider, _) => Container(
-            child: ListView.builder(
-              itemCount: provider.getTasks().length,
-              itemBuilder: (BuildContext context, int index) {
-                return TodoCard(
-                  onPress: () => {context.read<DatabaseHive>().remove(index)},
-                  todoText: provider.getTasks()[index].text,
-                  isDone: provider.getTasks()[index].isDone,
-                  onChanged: (_) {
-                    context.read<DatabaseHive>().onChange(index,context.read<DatabaseHive>().getTasks()[index].text,context.read<DatabaseHive>().getTasks()[index].isDone);
-                  },
-                  onPressed: () {
-                    editOrAdd(index);
-                  },
-                );
-              },
-            ),
-          ),
+          builder: (_, provider, _) {
+            List Tasks=provider.getTasks();
+             return Container(
+              child: ListView.builder(
+                itemCount: provider.getTasks().length,
+                itemBuilder: (BuildContext context, int index) {
+                  return TodoCard(
+                    onPress: () => {provider.remove(index)},
+                    todoText: provider.getTasks()[index].text,
+                    isDone: provider.getTasks()[index].isDone,
+                    onChanged: (_) {
+                      provider.onChange(
+                        index,
+                        provider.getTasks()[index].text,
+                        provider.getTasks()[index].isDone,
+                      );
+                    },
+                    onPressed: () {
+                      editOrAdd(index);
+                    },
+                  );
+                },
+              ),
+            );
+          },
         ),
       ),
     );
