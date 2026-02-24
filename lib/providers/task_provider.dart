@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:todo/data/models/tasks.dart';
+import 'package:todo/data/models/task.dart';
 
 class DatabaseHive extends ChangeNotifier {
-  var _box = Hive.box<Tasks>("TaskBox");
+  var _box = Hive.box<Task>("TaskBox");
 
-  List<Tasks> getTasks() => _box.values.toList();
+  List<Task> getTasks() => _box.values.toList();
 
   void saving(String task, bool isDone) {
-    _box.add(Tasks(text: task, isDone: isDone));
+    _box.add(Task(text: task, isDone: isDone));
     notifyListeners();
   }
 
@@ -18,12 +18,12 @@ class DatabaseHive extends ChangeNotifier {
   }
 
   void onChange(int index, String text, bool isDone) {
-    _box.putAt(index, Tasks(text: text, isDone: !isDone));
+    _box.putAt(index, Task(text: text, isDone: !isDone));
     notifyListeners();
   }
 
   void update(int index, String text, bool isDone) {
-    _box.putAt(index, Tasks(text: text, isDone: isDone));
+    _box.putAt(index, Task(text: text, isDone: isDone));
     notifyListeners();
   }
 }

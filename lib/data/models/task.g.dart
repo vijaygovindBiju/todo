@@ -1,29 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'tasks.dart';
+part of 'task.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TasksAdapter extends TypeAdapter<Tasks> {
+class TaskAdapter extends TypeAdapter<Task> {
   @override
   final int typeId = 0;
 
   @override
-  Tasks read(BinaryReader reader) {
+  Task read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Tasks(
+    return Task(
       text: fields[0] as String,
       isDone: fields[1] as bool,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Tasks obj) {
+  void write(BinaryWriter writer, Task obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -38,7 +38,7 @@ class TasksAdapter extends TypeAdapter<Tasks> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TasksAdapter &&
+      other is TaskAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
