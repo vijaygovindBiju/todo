@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/data/database_hive.dart';
-import 'package:todo/data/tasks.dart';
-import 'package:todo/pages/home.dart';
+import 'package:todo/data/models/tasks.dart';
+import 'package:todo/pages/home_page.dart';
+import 'package:todo/providers/task_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

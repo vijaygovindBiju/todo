@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:todo/data/tasks.dart';
+import 'package:todo/data/models/tasks.dart';
 
 class DatabaseHive extends ChangeNotifier {
   var _box = Hive.box<Tasks>("TaskBox");

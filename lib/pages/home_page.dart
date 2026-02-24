@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/data/database_hive.dart';
-import 'package:todo/data/tasks.dart';
-import 'package:todo/widget/dialogbo.dart';
+import 'package:todo/providers/task_provider.dart';
+import 'package:todo/widget/task_dialog.dart';
 import 'package:todo/widget/todo_card.dart';
 
 class Home extends StatefulWidget {
@@ -13,9 +12,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late DatabaseHive taskProvider = taskProvider = context.read<DatabaseHive>();
 
   void editOrAdd(int? index) async {
+    final taskProvider = context.read<DatabaseHive>();
     if (index != null) {
       final result = await showDialog(
         context: context,
@@ -63,7 +62,7 @@ class _HomeState extends State<Home> {
         padding: const EdgeInsets.all(18.0),
         child: Consumer<DatabaseHive>(
           builder: (_, provider, _) {
-            List<Tasks> tasks = provider.getTasks();
+            final List tasks = provider.getTasks();
             return Container(
               child: ListView.builder(
                 itemCount: tasks.length,

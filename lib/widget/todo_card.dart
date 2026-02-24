@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo/widget/myslidabelaction.dart';
+import 'package:todo/widget/task_slidabelaction.dart';
 
 class TodoCard extends StatelessWidget {
   final String todoText;
