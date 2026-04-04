@@ -43,6 +43,7 @@ class _HomeState extends State<Home> {
     }
   }
 
+  final List taskFilter = ["all", "completerd", "Progress"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +57,24 @@ class _HomeState extends State<Home> {
         onPressed: () => editOrAdd(null),
         child: Icon(Icons.add),
       ),
-      body: Consumer<DatabaseHive>(
+      body: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Column(
+          children: [
+            Wrap(
+              children: [
+                ListView.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return ChoiceChip(
+                      label: taskFilter[index],
+                      selected: false,
+                    );
+                  },
+                ),
+              ],
+            ),
+            Expanded(
+              child: Consumer<DatabaseHive>(
                 builder: (_, provider, _) {
                   final List tasks = provider.getTasks();
                   return Container(
@@ -79,7 +97,11 @@ class _HomeState extends State<Home> {
                     ),
                   );
                 },
-              )
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
