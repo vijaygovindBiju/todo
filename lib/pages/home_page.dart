@@ -9,6 +9,7 @@ class Home extends StatefulWidget {
   @override
   State<Home> createState() => _HomeState();
 }
+
 class _HomeState extends State<Home> {
   void editOrAdd(int? index) async {
     final taskProvider = context.read<DatabaseHive>();
@@ -42,6 +43,7 @@ class _HomeState extends State<Home> {
     }
   }
 
+  final List taskFilter = ["all", "completerd", "Progress"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,29 +59,47 @@ class _HomeState extends State<Home> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(18.0),
-        child: Consumer<DatabaseHive>(
-          builder: (_, provider, _) {
-            final List tasks = provider.getTasks();
-            return Container(
-              child: ListView.builder(
-                itemCount: tasks.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final task = tasks[index];
-                  return TodoCard(
-                    onPress: () => provider.remove(index),
-                    todoText: task.text,
-                    isDone: task.isDone,
-                    onChanged: (_) {
-                      provider.onChange(index, task.text, !task.isDone);
-                    },
-                    onPressed: () {
-                      editOrAdd(index);
-                    },
+        child: Column(
+          children: [
+            Wrap(
+              children: [
+                ListView.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return ChoiceChip(
+                      label: taskFilter[index],
+                      selected: false,
+                    );
+                  },
+                ),
+              ],
+            ),
+            Expanded(
+              child: Consumer<DatabaseHive>(
+                builder: (_, provider, _) {
+                  final List tasks = provider.getTasks();
+                  return Container(
+                    child: ListView.builder(
+                      itemCount: tasks.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final task = tasks[index];
+                        return TodoCard(
+                          onPress: () => provider.remove(index),
+                          todoText: task.text,
+                          isDone: task.isDone,
+                          onChanged: (_) {
+                            provider.onChange(index, task.text, !task.isDone);
+                          },
+                          onPressed: () {
+                            editOrAdd(index);
+                          },
+                        );
+                      },
+                    ),
                   );
                 },
               ),
-            );
-          },
+            ),
+          ],
         ),
       ),
     );

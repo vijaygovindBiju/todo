@@ -1,11 +1,21 @@
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:todo/data/models/task.dart';
 
+enum TaskFilter {
+  all,
+  complete,
+  pending
+}
 class DatabaseHive extends ChangeNotifier {
+
   DatabaseHive() {
     _taskList = _box.values.toList();
   }
+
+  
+
   List<Task> _taskList = [];
 
   var _box = Hive.box<Task>("TaskBox");
@@ -14,7 +24,7 @@ class DatabaseHive extends ChangeNotifier {
 
   void saving(String task, bool isDone) {
     _box.add(Task(text: task, isDone: isDone));
-    _taskList.insert(0, Task(text: task, isDone: isDone));
+    _taskList.add(Task(text: task, isDone: isDone));
     notifyListeners();
   }
 
