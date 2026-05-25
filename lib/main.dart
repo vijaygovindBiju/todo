@@ -5,6 +5,7 @@ import 'package:todo/data/models/task.dart';
 import 'package:todo/pages/home_page.dart';
 import 'package:todo/providers/task_provider.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();

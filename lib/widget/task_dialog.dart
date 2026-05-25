@@ -26,21 +26,16 @@ class _DialogboState extends State<Dialogbo> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.4,
-        maxWidth: MediaQuery.of(context).size.width * 0.97,
-        minHeight: MediaQuery.of(context).size.height * 0.4,
-        minWidth: MediaQuery.of(context).size.width * 0.97,
-      ),
       backgroundColor: Colors.yellow[300],
       content: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(height: 40),
+          SizedBox(height: 20),
           Text(
             (widget.index != null) ? "Edit the text " : "Enter the new text",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
           ),
-          TextField(controller: _editingController, maxLines: 10, minLines: 5),
+          TextField(controller: _editingController, maxLines: 5, minLines: 3),
           SizedBox(height: 40),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
