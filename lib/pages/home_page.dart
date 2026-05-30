@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/providers/task_provider.dart';
+import 'package:todo/widget/my_choice_chip.dart';
 import 'package:todo/widget/task_dialog.dart';
 import 'package:todo/widget/todo_card.dart';
 
@@ -45,6 +46,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final db = context.watch<DatabaseHive>();
     return Scaffold(
       backgroundColor: Colors.yellow[200],
       appBar: AppBar(
@@ -56,9 +58,43 @@ class _HomeState extends State<Home> {
         onPressed: () => editOrAdd(null),
         child: Icon(Icons.add),
       ),
-      body: Consumer<DatabaseHive>(
+      body: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(color: Colors.yellow),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                MyChoiceChip(
+                  isSelected: (db.currentFilter == TaskFilter.all),
+                  word: "All",
+                  onSelected: () {
+                    db.changeFilter(TaskFilter.all);
+                  },
+                ),
+                MyChoiceChip(
+                  isSelected: (db.currentFilter == TaskFilter.pending),
+                  word: "Pending",
+                  onSelected: () {
+                    db.changeFilter(TaskFilter.pending);
+                  },
+                ),
+                MyChoiceChip(
+                  isSelected: (db.currentFilter == TaskFilter.complete),
+                  word: "Completed",
+                  onSelected: () {
+                    db.changeFilter(TaskFilter.complete);
+                  },
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+              child: Consumer<DatabaseHive>(
                 builder: (_, provider, _) {
-                  final List tasks = provider.getTasks();
+                  final List tasks = db.filteredTasks;
                   return Container(
                     child: ListView.builder(
                       itemCount: tasks.length,
@@ -79,7 +115,11 @@ class _HomeState extends State<Home> {
                     ),
                   );
                 },
-              )
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
